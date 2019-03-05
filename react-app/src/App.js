@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Router, Route, Link} from 'react-router-dom';
+import { Router, Route, Link } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 import './App.css';
 
@@ -15,22 +15,29 @@ class App extends Component {
   render() {
     return (
       <Router history={history}>
-        <div>
-          <ul>
-            <li><Link to="/">Public</Link></li>
-            <li><Link to="/private">Private</Link></li>
-            <li><Link to="/signin">Signin</Link></li>
-            <li><Link to="/signup">Signup</Link></li>
-            <li><Link to="/confirmation">Confirmation</Link></li>
-          </ul>
+        <div className="app">
+          <div className="header">
+            <div className="header-pages">
+              <Link to="/" className="btn btn-link header-link">Public</Link>
+              <Link to="/private" className="btn btn-link header-link">Private</Link>
+            </div>
+            <div className="header-sign">
+              <Link to="/signup" className="btn btn-link header-link">Signup</Link>
+              <Link to="/signin" className="btn btn-link header-link">Signin</Link>
+            </div>
+          </div>
 
-          <hr/>
+          <hr />
 
-          <Route exact path='/' component={Public} />
-          <Route path='/private' component={Private} />
-          <Route path='/signin' component={Signin} />
-          <Route path='/signup' component={Signup} />
-          <Route path='/confirmation' component={Confirmation} />
+          <div className="body">
+            <div>
+              <Route exact path='/' component={Public} />
+              <Route path='/private' component={Private} />
+              <Route path='/signin' component={Signin} />
+              <Route path='/signup' component={Signup} />
+              <Route path='/confirmation' component={Confirmation} />
+            </div>
+          </div>
         </div>
       </Router>
     );

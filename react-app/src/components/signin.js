@@ -4,7 +4,7 @@ class Signin extends Component {
   render() {
     return (
       <div>
-        Signin
+        <input type="text" />
       </div>
     );
   }
