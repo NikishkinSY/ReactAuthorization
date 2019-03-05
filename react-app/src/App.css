@@ -14,13 +14,13 @@
 .header-pages {
   display: grid;
   justify-content: left;
-  grid-template-columns: 70px 70px;
+  grid-template-columns: 80px 80px;
 }
 
 .header-sign {
   display: grid;
   justify-content: right;
-  grid-template-columns: 70px 70px;
+  grid-template-columns: 80px 80px;
 }
 
 .body {
