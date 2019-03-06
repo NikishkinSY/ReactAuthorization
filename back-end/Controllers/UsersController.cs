@@ -35,8 +35,8 @@ namespace WebApi.Controllers
             _emailService = emailService;
         }
         
-        [HttpPost("authenticate")]
-        public async Task<IActionResult> Authenticate([FromBody]UserDto userDto)
+        [HttpPost("signin")]
+        public async Task<IActionResult> Signin([FromBody]UserDto userDto)
         {
             var user = await _userService.AuthenticateAsync(userDto.Email, userDto.Password);
 
@@ -67,8 +67,8 @@ namespace WebApi.Controllers
             });
         }
         
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody]UserDto userDto)
+        [HttpPost("signup")]
+        public async Task<IActionResult> Signup([FromBody]UserDto userDto)
         {
             var user = _mapper.Map<User>(userDto);
 
