@@ -4,6 +4,6 @@ namespace WebApi.Services
 {
     public interface IEmailService
     {
-        void SendEmail(string email, string header, string message);
+        Task SendEmailAsync(string email, string header, string message);
     }
 }

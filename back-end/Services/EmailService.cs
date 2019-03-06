@@ -17,33 +17,25 @@ namespace WebApi.Services
             _appSettings = appSettings.Value;
         }
 
-        public void SendEmail(string email, string header, string message)
+        public async Task SendEmailAsync(string email, string header, string message)
         {
-            try
+            var from = new MailAddress(_appSettings.Email);
+            var to = new MailAddress(email);
+
+            var mailMessage = new MailMessage(from, to)
             {
-                var from = new MailAddress(_appSettings.Email);
-                var to = new MailAddress(email);
+                Subject = header,
+                Body = message,
+                IsBodyHtml = true
+            };
 
-                var mailMessage = new MailMessage(from, to)
-                {
-                    Subject = header,
-                    Body = message,
-                    IsBodyHtml = true
-                };
-
-                var smtp = new SmtpClient(_appSettings.SmtpServer, _appSettings.SmtpServerPort)
-                {
-                    Credentials = new NetworkCredential(_appSettings.Email, _appSettings.Password),
-                    EnableSsl = true
-                };
-
-                smtp.Send(mailMessage);
-            }
-            catch (Exception e)
+            var smtp = new SmtpClient(_appSettings.SmtpServer, _appSettings.SmtpServerPort)
             {
-                Console.WriteLine(e);
-                throw;
-            }
+                Credentials = new NetworkCredential(_appSettings.Email, _appSettings.Password),
+                EnableSsl = true
+            };
+
+            await smtp.SendMailAsync(mailMessage);
         }
     }
 }

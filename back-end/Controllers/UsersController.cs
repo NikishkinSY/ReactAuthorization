@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using AutoMapper;
-using System.IdentityModel.Tokens.Jwt;
-using WebApi.Helpers;
 using Microsoft.Extensions.Options;
-using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
-using WebApi.Services;
+using System.Text;
+using System.Threading.Tasks;
 using WebApi.Dtos;
 using WebApi.Entities;
+using WebApi.Helpers;
+using WebApi.Services;
 
 namespace WebApi.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class UsersController : ControllerBase
@@ -36,16 +34,17 @@ namespace WebApi.Controllers
             _appSettings = appSettings.Value;
             _emailService = emailService;
         }
-
-        [AllowAnonymous]
+        
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody]UserDto userDto)
+        public async Task<IActionResult> Authenticate([FromBody]UserDto userDto)
         {
-            var user = _userService.Authenticate(userDto.Email, userDto.Password);
+            var user = await _userService.AuthenticateAsync(userDto.Email, userDto.Password);
 
             if (user == null)
+            {
                 return BadRequest(new { message = "Username or password is incorrect" });
-
+            }
+                
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -67,18 +66,17 @@ namespace WebApi.Controllers
                 Token = tokenString
             });
         }
-
-        [AllowAnonymous]
+        
         [HttpPost("register")]
-        public IActionResult Register([FromBody]UserDto userDto)
+        public async Task<IActionResult> Register([FromBody]UserDto userDto)
         {
             var user = _mapper.Map<User>(userDto);
 
             try 
             {
-                var dbUser = _userService.Create(user, userDto.Password);
+                var dbUser = await _userService.CreateAsync(user, userDto.Password);
                 var link = $"{Request.Scheme}://{Request.Host.Value}/users/confirm?id={dbUser.Id}&guid={dbUser.ConfirmationGuid}";
-                _emailService.SendEmail(user.Email, "Confirm registration", $"<a href='{link}'>Click here</a>");
+                await _emailService.SendEmailAsync(user.Email, "Confirm registration", $"<a href='{link}'>Click here</a>");
                 return Ok();
             } 
             catch(AppException ex)
@@ -86,13 +84,11 @@ namespace WebApi.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-
-        [AllowAnonymous]
+        
         [HttpGet("confirm")]
-        public IActionResult ConfirmRegistration(int id, Guid guid)
+        public async Task ConfirmRegistration(int id, Guid guid)
         {
-            _userService.ConfirmRegistration(id, guid);
-            return null;
+            await _userService.ConfirmRegistrationAsync(id, guid);
         }
     }
 }

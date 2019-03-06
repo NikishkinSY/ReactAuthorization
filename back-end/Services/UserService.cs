@@ -1,6 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using WebApi.Entities;
 using WebApi.Helpers;
 
@@ -15,14 +16,14 @@ namespace WebApi.Services
             _context = context;
         }
 
-        public User Authenticate(string email, string password)
+        public async Task<User> AuthenticateAsync(string email, string password)
         {
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
                 return null;
             }
 
-            var user = _context.Users.SingleOrDefault(x => x.Email == email);
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.Email == email && x.IsRegistered);
 
             // check if username exists
             if (user == null)
@@ -40,12 +41,12 @@ namespace WebApi.Services
             return user;
         }
 
-        public User GetById(int id)
+        public async Task<User> GetByIdAsync(int id)
         {
-            return _context.Users.Find(id);
+            return await _context.Users.FindAsync(id);
         }
 
-        public User Create(User user, string password)
+        public async Task<User> CreateAsync(User user, string password)
         {
             // validation
             if (string.IsNullOrWhiteSpace(password))
@@ -66,14 +67,14 @@ namespace WebApi.Services
             user.ConfirmationGuid = Guid.NewGuid();
 
             _context.Users.Add(user);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return user;
         }
 
-        public void ConfirmRegistration(int id, Guid guid)
+        public async Task ConfirmRegistrationAsync(int id, Guid guid)
         {
-            var user = _context.Users.Find(id);
+            var user = await _context.Users.FindAsync(id);
 
             if (user == null || !user.ConfirmationGuid.Equals(guid))
             {
@@ -83,7 +84,17 @@ namespace WebApi.Services
             user.IsRegistered = true;
 
             _context.Users.Update(user);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user != null)
+            {
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
+            }
         }
 
         // private helper methods

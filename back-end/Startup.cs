@@ -16,11 +16,9 @@ namespace WebApi
 {
     public class Startup
     {
-        public Startup()
+        public Startup(IConfiguration configuration)
         {
-            Configuration = new ConfigurationBuilder()
-                .AddEnvironmentVariables()
-                .Build();
+            Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -53,7 +51,7 @@ namespace WebApi
                     {
                         var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
                         var userId = int.Parse(context.Principal.Identity.Name);
-                        var user = userService.GetById(userId);
+                        var user = userService.GetByIdAsync(userId).Result;
                         if (user == null)
                         {
                             // return unauthorized if user no longer exists
