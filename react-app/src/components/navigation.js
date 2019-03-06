@@ -37,7 +37,7 @@ class Navigation extends Component {
 
             {this.props.cookies.get('login')
               ? <div className="header-sign">
-                  <label className="label">Hello: {this.props.cookies.get('login')}</label>
+                  <label className="label header-name">{this.props.cookies.get('login')}</label>
                   <Link to="/public" onClick={this.signOut} className="btn btn-link header-link">Signout</Link>
                 </div>
               : <div className="header-sign">

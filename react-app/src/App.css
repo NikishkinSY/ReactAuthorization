@@ -34,3 +34,7 @@
   display: grid;
   grid-row-gap: 10px;
 }
+
+.header-name {
+  overflow: hidden;
+}

@@ -4,6 +4,11 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import Navigation from './components/navigation';
 import { withCookies } from 'react-cookie';
+import config from 'react-global-configuration';
+
+config.set({ 
+  server: 'http://localhost:63433/'
+});
 
 function changeEmail(state = {}, action) {
   switch(action.type) {
