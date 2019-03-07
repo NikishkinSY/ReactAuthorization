@@ -72,7 +72,7 @@ namespace WebApi.Controllers
         {
             var user = _mapper.Map<User>(userDto);
             var dbUser = await _userService.CreateAsync(user, userDto.Password);
-            var link = $"{Request.Scheme}://{Request.Host.Value}/users/confirm?id={dbUser.Id}&guid={dbUser.ConfirmationGuid}";
+            var link = $"{_appSettings.WebServer}/confirmation/{dbUser.Id}/{dbUser.ConfirmationGuid}";
             await _emailService.SendEmailAsync(user.Email, "Confirm registration", $"<a href='{link}'>Click here</a>");
             return Ok();
         }
@@ -81,7 +81,7 @@ namespace WebApi.Controllers
         public async Task<IActionResult> ConfirmRegistration(int id, Guid guid)
         {
             await _userService.ConfirmRegistrationAsync(id, guid);
-            return Ok();
+            return Ok("Email is confirmed");
         }
     }
 }
