@@ -2,37 +2,57 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withCookies } from 'react-cookie';
 import EmailInput from './email';
-import PasswordInput from './password';
-import {changePassword} from '../actions/changePassword'
 import axios from 'axios';
 import config from 'react-global-configuration';
+import { Redirect } from 'react-router-dom'; 
 
 class Signin extends Component {
+  state = {
+    toPublic: false,
+    error: '',
+    password: ''
+  }
+
   onSubmit = (event) => {
-    if (!this.props.email || !this.props.password) {
+    if (!this.props.email || !this.state.password) {
       event.preventDefault();
       return;
     }
 
     var url = config.get('server') + 'users/signin';
-    axios.post(url, { Email: this.props.email, Password: this.props.password })
+    axios.post(url, { Email: this.props.email, Password: this.state.password })
       .then(res => {
         this.props.cookies.set('login', this.props.email);
-        this.props.cookies.set('token', res.token);
-        this.props.changePassword('');
-        this.props.router.push('/public');
+        this.props.cookies.set('token', res.data.token);
+        this.setState({ toPublic: true });
+      }, err => {
+        this.setState({ error: err.message });
       });
 
+    this.setState({ password: '' });
     event.preventDefault();
   }
 
+  onPasswordChange(event) {
+    this.setState({ password: event.target.value });
+  }
+
   render() {
+    if (this.state.toPublic === true) {
+      return <Redirect to='/public' />
+    }
+
     return (
       <form className="sign-form" onSubmit={this.onSubmit}>
         <EmailInput />
-        <PasswordInput />
+        <div>
+          <input type="text" required="required" placeholder="password" value={this.state.password} onChange={this.onPasswordChange.bind(this)} />
+        </div>
         <div>
           <button type="submit" className="btn">Sign in</button>
+        </div>
+        <div>
+          {this.state.error}
         </div>
       </form>
     );
@@ -41,15 +61,8 @@ class Signin extends Component {
 
 function mapStateToProps(state) {
   return {
-    email: state.email,
-    password: state.password
+    email: state.email
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    changePassword: (password) => dispatch(changePassword(password))
-  };
-};
-
-export default withCookies(connect(mapStateToProps,mapDispatchToProps)(Signin));
+export default withCookies(connect(mapStateToProps)(Signin));

@@ -35,10 +35,12 @@ class Navigation extends Component {
               <Link to="/private" className="btn btn-link header-link">Private</Link>
             </div>
 
-            {this.props.cookies.get('login')
+            {this.props.cookies.get('login') && this.props.cookies.get('token')
               ? <div className="header-sign">
-                  <label className="label header-name">{this.props.cookies.get('login')}</label>
-                  <Link to="/public" onClick={this.signOut} className="btn btn-link header-link">Signout</Link>
+                  <div className="header-name">
+                    <label className="label">{this.props.cookies.get('login')}</label>
+                  </div>
+                  <Link to="/" onClick={this.signOut} className="btn btn-link header-link">Signout</Link>
                 </div>
               : <div className="header-sign">
                   <Link to="/signup" className="btn btn-link header-link">Signup</Link>
