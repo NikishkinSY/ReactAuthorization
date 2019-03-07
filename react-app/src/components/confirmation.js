@@ -9,9 +9,8 @@ class Confirmation extends Component {
   }
 
   componentWillMount() {
-    const { match: { params } } = this.props;
-
-    var url = config.get('server') + 'users/confirm?id=' + params.id + '&guid=' + params.guid
+    const params = this.props.match && this.props.match.params || {};
+    const url = config.get('server') + 'users/confirm?id=' + params.id + '&guid=' + params.guid
     axios.get(url)
       .then(res => {
         this.setState({ info: res.data });
