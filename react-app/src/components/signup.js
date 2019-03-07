@@ -19,15 +19,15 @@ class Signup extends Component {
     }
 
     if (this.state.password !== this.state.confirmPassword) {
-      this.setState({ error: 'Passwords do not match' });
+      this.setState({ error: 'Passwords don`t match' });
+      event.preventDefault();
+      return;
     }
 
     var url = config.get('server') + 'users/signup';
     axios.post(url, { Email: this.props.email, Password: this.state.password })
-      .then(res => {
-        this.props.cookies.set('login', this.props.email);
-      }, err => {
-        this.setState({ error: err.message });
+      .then(null, err => {
+        this.setState({ error: err.response.data.message });
       });
 
     this.setState({ password: '', confirmPassword: '' });
@@ -53,9 +53,9 @@ class Signup extends Component {
           <input type="text" required="required" placeholder="confirm password" value={this.state.confirmPassword} onChange={this.onConfirmPasswordChange.bind(this)} />
         </div>
         <div>
-          <button type="submit" className="btn">Sign in</button>
+          <button type="submit" className="btn">Sign up</button>
         </div>
-        <div>
+        <div className="error">
           {this.state.error}
         </div>
       </form>

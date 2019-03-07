@@ -39,3 +39,7 @@
   overflow: hidden;
   margin: 7px 0px;
 }
+
+.error {
+  color: red;
+}

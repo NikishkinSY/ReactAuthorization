@@ -8,7 +8,7 @@ import { Redirect } from 'react-router-dom';
 
 class Signin extends Component {
   state = {
-    toPublic: false,
+    toPrivate: false,
     error: '',
     password: ''
   }
@@ -24,9 +24,9 @@ class Signin extends Component {
       .then(res => {
         this.props.cookies.set('login', this.props.email);
         this.props.cookies.set('token', res.data.token);
-        this.setState({ toPublic: true });
+        this.setState({ toPrivate: true });
       }, err => {
-        this.setState({ error: err.message });
+        this.setState({ error: err.response.data.message });
       });
 
     this.setState({ password: '' });
@@ -38,8 +38,8 @@ class Signin extends Component {
   }
 
   render() {
-    if (this.state.toPublic === true) {
-      return <Redirect to='/public' />
+    if (this.state.toPrivate === true) {
+      return <Redirect to='/private' />
     }
 
     return (
@@ -51,7 +51,7 @@ class Signin extends Component {
         <div>
           <button type="submit" className="btn">Sign in</button>
         </div>
-        <div>
+        <div className="error">
           {this.state.error}
         </div>
       </form>
