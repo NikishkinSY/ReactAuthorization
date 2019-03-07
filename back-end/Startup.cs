@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace WebApi
 {
@@ -80,7 +81,7 @@ namespace WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             // global cors policy
             app.UseCors(x => x
@@ -91,6 +92,8 @@ namespace WebApi
             app.UseAuthentication();
 
             app.UseMvc();
+
+            loggerFactory.AddFile("Logs/{Date}.txt");
         }
     }
 }

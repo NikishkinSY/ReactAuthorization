@@ -7,5 +7,9 @@ namespace WebApi.Helpers
         public string Password { get; set; }
         public string SmtpServer { get; set; }
         public int SmtpServerPort { get; set; }
+        public string UserNotFound { get; set; }
+        public string EmailIsTaken { get; set; }
+        public string PasswordIsRequired { get; set; }
+        public string UsernameOrPasswordIsIncorrect { get; set; }
     }
 }

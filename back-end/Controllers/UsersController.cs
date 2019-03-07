@@ -42,7 +42,7 @@ namespace WebApi.Controllers
 
             if (user == null)
             {
-                throw new AppException("Username or password is incorrect");
+                throw new AppException(_appSettings.UsernameOrPasswordIsIncorrect);
             }
                 
             var tokenHandler = new JwtSecurityTokenHandler();

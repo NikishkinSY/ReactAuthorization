@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using WebApi.Entities;
 using WebApi.Helpers;
 
@@ -9,11 +10,15 @@ namespace WebApi.Services
 {
     public class UserService : IUserService
     {
-        private DataContext _context;
+        private readonly DataContext _context;
+        private readonly AppSettings _appSettings;
 
-        public UserService(DataContext context)
+        public UserService(
+            DataContext context,
+            IOptions<AppSettings> appSettings)
         {
             _context = context;
+            _appSettings = appSettings.Value;
         }
 
         public async Task<User> AuthenticateAsync(string email, string password)
@@ -51,12 +56,12 @@ namespace WebApi.Services
             // validation
             if (string.IsNullOrWhiteSpace(password))
             {
-                throw new AppException("Password is required");
+                throw new AppException(_appSettings.PasswordIsRequired);
             }
 
             if (_context.Users.Any(x => x.Email == user.Email))
             {
-                throw new AppException($"Email \"{user.Email}\" is already taken");
+                throw new AppException(_appSettings.EmailIsTaken);
             }
 
             byte[] passwordHash, passwordSalt;
@@ -78,7 +83,7 @@ namespace WebApi.Services
 
             if (user == null || !user.ConfirmationGuid.Equals(guid))
             {
-                throw new AppException("User not found");
+                throw new AppException(_appSettings.UserNotFound);
             }
 
             user.IsRegistered = true;

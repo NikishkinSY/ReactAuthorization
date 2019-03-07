@@ -18,7 +18,7 @@ namespace WebApi.Helpers
 
         public void OnException(ExceptionContext context)
         {
-            _logger.LogError(0, context.Exception, context.Exception.Message);
+            _logger.LogError(context.Exception, context.Exception.Message);
             HttpStatusCode status;
             string message;
 
@@ -26,11 +26,11 @@ namespace WebApi.Helpers
             {
                 case AppException ex:
                 {
-                    message = ex.ToString();
-                    status = HttpStatusCode.InternalServerError;
+                    message = ex.Message;
+                    status = HttpStatusCode.BadRequest;
                     break;
                 }
-                case UnauthorizedAccessException ex:
+                case UnauthorizedAccessException _:
                 {
                     message = "Unauthorized Access";
                     status = HttpStatusCode.Unauthorized;
