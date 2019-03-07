@@ -81,7 +81,7 @@ namespace WebApi.Controllers
         public async Task<IActionResult> ConfirmRegistration(int id, Guid guid)
         {
             await _userService.ConfirmRegistrationAsync(id, guid);
-            return Ok("Email is confirmed");
+            return Ok();
         }
     }
 }

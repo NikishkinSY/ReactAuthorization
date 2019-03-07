@@ -23,7 +23,7 @@ namespace WebApi.Services
 
         public async Task<User> AuthenticateAsync(string email, string password)
         {
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             {
                 return null;
             }
@@ -54,9 +54,9 @@ namespace WebApi.Services
         public async Task<User> CreateAsync(User user, string password)
         {
             // validation
-            if (string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(user.Email) || string.IsNullOrWhiteSpace(password))
             {
-                throw new AppException(_appSettings.PasswordIsRequired);
+                throw new AppException(_appSettings.EmailAndPasswordAreRequired);
             }
 
             if (_context.Users.Any(x => x.Email == user.Email))
