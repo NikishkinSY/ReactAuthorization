@@ -42,7 +42,7 @@ namespace WebApi.Controllers
 
             if (user == null)
             {
-                return BadRequest(new { message = "Username or password is incorrect" });
+                throw new AppException("Username or password is incorrect");
             }
                 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -71,24 +71,17 @@ namespace WebApi.Controllers
         public async Task<IActionResult> Signup([FromBody]UserDto userDto)
         {
             var user = _mapper.Map<User>(userDto);
-
-            try 
-            {
-                var dbUser = await _userService.CreateAsync(user, userDto.Password);
-                var link = $"{Request.Scheme}://{Request.Host.Value}/users/confirm?id={dbUser.Id}&guid={dbUser.ConfirmationGuid}";
-                await _emailService.SendEmailAsync(user.Email, "Confirm registration", $"<a href='{link}'>Click here</a>");
-                return Ok();
-            } 
-            catch(AppException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
+            var dbUser = await _userService.CreateAsync(user, userDto.Password);
+            var link = $"{Request.Scheme}://{Request.Host.Value}/users/confirm?id={dbUser.Id}&guid={dbUser.ConfirmationGuid}";
+            await _emailService.SendEmailAsync(user.Email, "Confirm registration", $"<a href='{link}'>Click here</a>");
+            return Ok();
         }
         
         [HttpGet("confirm")]
-        public async Task ConfirmRegistration(int id, Guid guid)
+        public async Task<IActionResult> ConfirmRegistration(int id, Guid guid)
         {
             await _userService.ConfirmRegistrationAsync(id, guid);
+            return Ok();
         }
     }
 }
