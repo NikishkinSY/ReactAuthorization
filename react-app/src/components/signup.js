@@ -8,6 +8,7 @@ import config from 'react-global-configuration';
 class Signup extends Component {
   state = {
     error: '',
+    info: '',
     password: '',
     confirmPassword: ''
   }
@@ -26,8 +27,10 @@ class Signup extends Component {
 
     var url = config.get('server') + 'users/signup';
     axios.post(url, { Email: this.props.email, Password: this.state.password })
-      .then(null, err => {
-        this.setState({ error: err.response.data.message });
+      .then(res => {
+        this.setState({ info: 'We have sent an email with a confirmation link to your email address' });
+      }, err => {
+        this.setState({ error: err.response.data });
       });
 
     this.setState({ password: '', confirmPassword: '' });
@@ -57,6 +60,9 @@ class Signup extends Component {
         </div>
         <div className="error">
           {this.state.error}
+        </div>
+        <div>
+          {this.state.info}
         </div>
       </form>
     );

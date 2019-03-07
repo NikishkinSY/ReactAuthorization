@@ -26,7 +26,7 @@ class Signin extends Component {
         this.props.cookies.set('token', res.data.token);
         this.setState({ toPrivate: true });
       }, err => {
-        this.setState({ error: err.response.data.message });
+        this.setState({ error: err.response.data });
       });
 
     this.setState({ password: '' });
