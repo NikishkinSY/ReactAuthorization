@@ -10,8 +10,7 @@ class Private extends Component {
     toSignin: false
   }
 
-  constructor(props) {
-    super(props);
+  componentWillMount() {
     var url = config.get('server') + 'home/private';
     axios.get(url, {
       headers: {

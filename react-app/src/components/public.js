@@ -7,8 +7,7 @@ class Public extends Component {
     data: ''
   }
 
-  constructor(props) {
-    super(props);
+  componentWillMount() {
     var url = config.get('server') + 'home/public';
     axios.get(url)
       .then(res => {

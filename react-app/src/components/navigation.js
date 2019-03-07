@@ -57,7 +57,7 @@ class Navigation extends Component {
               <Route path='/private' component={Private} />
               <Route path='/signin' component={Signin} />
               <Route path='/signup' component={Signup} />
-              <Route path='/confirmation' component={Confirmation} />
+              <Route exact path='/confirmation/:id/:guid' component={Confirmation} />
             </div>
           </div>
         </div>
