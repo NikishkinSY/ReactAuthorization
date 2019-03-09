@@ -28,12 +28,12 @@ class Signup extends Component {
     var url = config.get('server') + 'users/signup';
     axios.post(url, { Email: this.props.email, Password: this.state.password })
       .then(res => {
-        this.setState({ info: 'We have sent an email with a confirmation link to your email address' });
+        this.setState({ info: res.data });
       }, err => {
         this.setState({ error: err.response.data });
       });
 
-    this.setState({ password: '', confirmPassword: '' });
+    this.setState({ password: '', confirmPassword: '', info: 'Wait...' });
     event.preventDefault();
   }
 

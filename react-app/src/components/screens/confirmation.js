@@ -8,15 +8,20 @@ class Confirmation extends Component {
     error: ''
   }
 
-  componentWillMount() {
+  componentDidMount() {
+    console.log(this.props.match.params);
     const params = this.props.match && this.props.match.params || {};
+    console.log(params);
     const url = config.get('server') + 'users/confirm?id=' + params.id + '&guid=' + params.guid
+    
     axios.get(url)
       .then(res => {
         this.setState({ info: res.data });
-      }, err => {
+      }).catch(err => {
         this.setState({ error: err.response.data });
       });
+
+      this.setState({ info: "Wait..." });
   }
 
   render() {

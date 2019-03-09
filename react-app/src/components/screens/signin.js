@@ -29,7 +29,7 @@ class Signin extends Component {
         this.setState({ error: err.response.data });
       });
 
-    this.setState({ password: '' });
+    this.setState({ password: '', info: 'Wait...' });
     event.preventDefault();
   }
 
