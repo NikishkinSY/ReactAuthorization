@@ -74,14 +74,14 @@ namespace WebApi.Controllers
             var dbUser = await _userService.CreateAsync(user, userDto.Password);
             var link = $"{_appSettings.WebServer}/confirmation/{dbUser.Id}/{dbUser.ConfirmationGuid}";
             await _emailService.SendEmailAsync(user.Email, "Confirm registration", $"<a href='{link}'>Click here</a>");
-            return Ok();
+            return Ok(_appSettings.ConfirmationEmailSent);
         }
         
         [HttpGet("confirm")]
         public async Task<IActionResult> ConfirmRegistration(int id, Guid guid)
         {
             await _userService.ConfirmRegistrationAsync(id, guid);
-            return Ok();
+            return Ok(_appSettings.EmailIsConfirmed);
         }
     }
 }

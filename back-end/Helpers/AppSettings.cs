@@ -12,5 +12,7 @@ namespace WebApi.Helpers
         public string EmailIsTaken { get; set; }
         public string EmailAndPasswordAreRequired { get; set; }
         public string UsernameOrPasswordIsIncorrect { get; set; }
+        public string ConfirmationEmailSent { get; set; }
+        public string EmailIsConfirmed { get; set; }
     }
 }
