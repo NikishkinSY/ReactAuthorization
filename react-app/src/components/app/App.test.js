@@ -11,7 +11,7 @@ import Public from '../screens/public';
 import Signin from '../screens/signin';
 import Signup from '../screens/signup';
 import EmailInput from '../common/email';
-import Navigation from '../common/navigation';
+import Navigation from '../navigation';
 
 configure({ adapter: new Adapter() });
 

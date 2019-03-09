@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Provider } from 'react-redux';
-import Navigation from '../common/navigation';
+import Navigation from '../navigation/index';
 import { withCookies } from 'react-cookie';
 import config from 'react-global-configuration';
 import store from '../../store';
