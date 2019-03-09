@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Provider } from 'react-redux';
-import Navigation from './components/navigation';
+import Navigation from '../common/navigation';
 import { withCookies } from 'react-cookie';
 import config from 'react-global-configuration';
-import store from './store';
+import store from '../../store';
 
 config.set({ 
   server: 'http://localhost:63433/'

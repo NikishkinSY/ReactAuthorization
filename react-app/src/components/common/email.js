@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { updateEmail } from '../store/actions';
+import { updateEmail } from '../../store/actions';
 
 class EmailInput extends Component {
   onEmailChange(event) {

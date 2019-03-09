@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withCookies } from 'react-cookie';
-import EmailInput from './email';
+import EmailInput from '../common/email';
 import axios from 'axios';
 import config from 'react-global-configuration';
 

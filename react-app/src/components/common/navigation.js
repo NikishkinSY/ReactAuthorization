@@ -4,13 +4,13 @@ import createBrowserHistory from 'history/createBrowserHistory';
 import { connect } from 'react-redux';
 import { withCookies } from 'react-cookie';
 
-import Confirmation from './confirmation';
-import Private from './private';
-import Public from './public';
-import Signin from './signin';
-import Signup from './signup';
+import Confirmation from '../screens/confirmation';
+import Private from '../screens/private';
+import Public from '../screens/public';
+import Signin from '../screens/signin';
+import Signup from '../screens/signup';
 
-import { updateEmail } from '../store/actions';
+import { updateEmail } from '../../store/actions';
 
 const history = createBrowserHistory();
 

@@ -5,13 +5,13 @@ import { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
 import App from './App';
-import Confirmation from './components/confirmation';
-import Private from './components/private';
-import Public from './components/public';
-import Signin from './components/signin';
-import Signup from './components/signup';
-import EmailInput from './components/email';
-import Navigation from './components/navigation';
+import Confirmation from '../screens/confirmation';
+import Private from '../screens/private';
+import Public from '../screens/public';
+import Signin from '../screens/signin';
+import Signup from '../screens/signup';
+import EmailInput from '../common/email';
+import Navigation from '../common/navigation';
 
 configure({ adapter: new Adapter() });
 
