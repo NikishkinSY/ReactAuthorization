@@ -10,14 +10,14 @@ import Public from './public';
 import Signin from './signin';
 import Signup from './signup';
 
-import { changeEmail } from '../actions/changeEmail'
+import { updateEmail } from '../store/actions';
 
 const history = createBrowserHistory();
 
 class Navigation extends Component {
   constructor(props) {
     super(props);
-    this.props.changeEmail(this.props.cookies.get('login'));
+    this.props.updateEmail(this.props.cookies.get('login'));
   }
 
   signOut = () => {
@@ -74,7 +74,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    changeEmail: (email) => dispatch(changeEmail(email))
+    updateEmail: (email) => dispatch(updateEmail(email))
   };
 };
 

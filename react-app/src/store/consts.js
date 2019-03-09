@@ -1,0 +1,1 @@
+export const STORE__UPDATE_EMAIL = 'STORE__UPDATE_EMAIL';

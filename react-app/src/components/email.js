@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { changeEmail } from '../actions/changeEmail'
+import { updateEmail } from '../store/actions';
 
 class EmailInput extends Component {
   onEmailChange(event) {
-    this.props.changeEmail(event.target.value);
+    this.props.updateEmail(event.target.value);
   }
 
   render() {
@@ -24,7 +24,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    changeEmail: (email) => dispatch(changeEmail(email))
+    updateEmail: (email) => dispatch(updateEmail(email))
   };
 };
 
