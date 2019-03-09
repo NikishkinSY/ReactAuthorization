@@ -25,6 +25,8 @@ class Signup extends Component {
       return;
     }
 
+    this.setState({ info: '' });
+
     var url = config.get('server') + 'users/signup';
     axios.post(url, { Email: this.props.email, Password: this.state.password })
       .then(res => {

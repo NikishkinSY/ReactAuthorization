@@ -19,7 +19,6 @@ const history = createBrowserHistory();
 class Navigation extends Component {
   componentDidMount(){
     const {updateEmail, cookies} = this.props;
-
     updateEmail(cookies.get('login'));
   }
 

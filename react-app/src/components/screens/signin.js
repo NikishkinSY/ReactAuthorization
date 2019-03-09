@@ -9,6 +9,7 @@ import { Redirect } from 'react-router-dom';
 class Signin extends Component {
   state = {
     toPrivate: false,
+    info: '',
     error: '',
     password: ''
   }
@@ -19,12 +20,14 @@ class Signin extends Component {
       return;
     }
 
+    this.setState({ info: '' });
+
     var url = config.get('server') + 'users/signin';
     axios.post(url, { Email: this.props.email, Password: this.state.password })
       .then(res => {
         this.props.cookies.set('login', this.props.email);
         this.props.cookies.set('token', res.data.token);
-        this.setState({ toPrivate: true });
+        this.setState({ toPrivate: true, error: '' });
       }, err => {
         this.setState({ error: err.response.data });
       });
@@ -53,6 +56,9 @@ class Signin extends Component {
         </div>
         <div className="error">
           {this.state.error}
+        </div>
+        <div>
+          {this.state.info}
         </div>
       </form>
     );
