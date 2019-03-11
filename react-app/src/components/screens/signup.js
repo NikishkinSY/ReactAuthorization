@@ -20,17 +20,15 @@ class Signup extends Component {
       return;
     }
 
-    this.setState({ info: '' });
-
     const url = config.get('server') + 'users/signup';
     axios.post(url, { Email: this.props.email, Password: this.state.password })
       .then(res => {
         this.setState({ info: res.data });
       }, err => {
-        this.setState({ error: err.response.data });
+        this.setState({ error: err.response.data, info: '' });
       });
 
-    this.setState({ password: '', confirmPassword: '', info: 'Wait...' });
+    this.setState({ password: '', confirmPassword: '', error:'', info: 'Wait...' });
     event.preventDefault();
   }
 

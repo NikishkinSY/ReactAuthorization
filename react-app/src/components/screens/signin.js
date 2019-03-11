@@ -20,19 +20,17 @@ class Signin extends Component {
       return;
     }
 
-    this.setState({ info: '' });
-
     const url = config.get('server') + 'users/signin';
     axios.post(url, { Email: this.props.email, Password: this.state.password })
       .then(res => {
         this.props.cookies.set('login', this.props.email);
         this.props.cookies.set('token', res.data.token);
-        this.setState({ toPrivate: true, error: '' });
+        this.setState({ toPrivate: true, info: '' });
       }, err => {
-        this.setState({ error: err.response.data });
+        this.setState({ error: err.response.data, info: '' });
       });
 
-    this.setState({ password: '', info: 'Wait...' });
+    this.setState({ password: '', info: 'Wait...', error: ''});
     event.preventDefault();
   }
 
