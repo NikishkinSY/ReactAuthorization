@@ -22,7 +22,7 @@ class Signin extends Component {
 
     this.setState({ info: '' });
 
-    var url = config.get('server') + 'users/signin';
+    const url = config.get('server') + 'users/signin';
     axios.post(url, { Email: this.props.email, Password: this.state.password })
       .then(res => {
         this.props.cookies.set('login', this.props.email);

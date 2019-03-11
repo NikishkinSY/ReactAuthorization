@@ -11,7 +11,7 @@ class Private extends Component {
   }
 
   componentDidMount() {
-    var url = config.get('server') + 'home/private';
+    const url = config.get('server') + 'home/private';
     axios.get(url, {
       headers: {
         Authorization: 'Bearer ' + this.props.cookies.get('token'),
