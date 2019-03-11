@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import config from 'react-global-configuration';
 import { Redirect } from 'react-router-dom';
+import api from '../common/api';
 import { withCookies } from 'react-cookie';
+import config from 'react-global-configuration';
 
 class Private extends Component {
   state ={
@@ -11,12 +11,7 @@ class Private extends Component {
   }
 
   componentDidMount() {
-    const url = config.get('server') + 'home/private';
-    axios.get(url, {
-      headers: {
-        Authorization: 'Bearer ' + this.props.cookies.get('token'),
-      }
-    })
+    api.Api(config.get('server')).private(this.props.cookies.get('token'))
       .then(res => {
         this.setState({ data: res.data });
       }, err => {

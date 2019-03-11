@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import api from '../common/api';
 import config from 'react-global-configuration';
-import axios from 'axios';
 
 class Confirmation extends Component {
   state = {
@@ -10,8 +10,7 @@ class Confirmation extends Component {
 
   componentDidMount() {
     const params = this.props.match && this.props.match.params || {};
-    const url = config.get('server') + 'users/confirm?id=' + params.id + '&guid=' + params.guid
-    axios.get(url)
+    api.Api(config.get('server')).confirmation(params.id, params.guid)
       .then(res => {
         this.setState({ info: res.data });
       }, err => {

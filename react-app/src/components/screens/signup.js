@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withCookies } from 'react-cookie';
 import EmailInput from '../common/email';
-import axios from 'axios';
+import api from '../common/api';
 import config from 'react-global-configuration';
 
 class Signup extends Component {
@@ -20,8 +20,7 @@ class Signup extends Component {
       return;
     }
 
-    const url = config.get('server') + 'users/signup';
-    axios.post(url, { Email: this.props.email, Password: this.state.password })
+    api.Api(config.get('server')).signup(this.props.email, this.state.password)
       .then(res => {
         this.setState({ info: res.data });
       }, err => {

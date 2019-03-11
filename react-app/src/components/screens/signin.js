@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withCookies } from 'react-cookie';
 import EmailInput from '../common/email';
-import axios from 'axios';
+import { Redirect } from 'react-router-dom';
+import api from '../common/api'; 
 import config from 'react-global-configuration';
-import { Redirect } from 'react-router-dom'; 
 
 class Signin extends Component {
   state = {
@@ -15,13 +15,7 @@ class Signin extends Component {
   }
 
   onSubmit = (event) => {
-    if (!this.props.email || !this.state.password) {
-      event.preventDefault();
-      return;
-    }
-
-    const url = config.get('server') + 'users/signin';
-    axios.post(url, { Email: this.props.email, Password: this.state.password })
+    api.Api(config.get('server')).signin(this.props.email, this.state.password)
       .then(res => {
         this.props.cookies.set('login', this.props.email);
         this.props.cookies.set('token', res.data.token);

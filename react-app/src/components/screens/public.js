@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import api from '../common/api';
 import config from 'react-global-configuration';
 
 class Public extends Component {
@@ -8,8 +8,7 @@ class Public extends Component {
   }
 
   componentDidMount() {
-    const url = config.get('server') + 'home/public';
-    axios.get(url)
+    api.Api(config.get('server')).public()
       .then(res => {
         this.setState({ data: res.data });
       }, err => {
