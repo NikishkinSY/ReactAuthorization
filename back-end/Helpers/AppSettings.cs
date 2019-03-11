@@ -8,6 +8,7 @@ namespace WebApi.Helpers
         public string Password { get; set; }
         public string SmtpServer { get; set; }
         public int SmtpServerPort { get; set; }
+        public bool EnableSsl { get; set; }
         public string UserNotFound { get; set; }
         public string EmailIsTaken { get; set; }
         public string EmailAndPasswordAreRequired { get; set; }

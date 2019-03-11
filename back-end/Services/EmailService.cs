@@ -32,7 +32,7 @@ namespace WebApi.Services
             var smtp = new SmtpClient(_appSettings.SmtpServer, _appSettings.SmtpServerPort)
             {
                 Credentials = new NetworkCredential(_appSettings.Email, _appSettings.Password),
-                EnableSsl = true
+                EnableSsl = _appSettings.EnableSsl
             };
 
             await smtp.SendMailAsync(mailMessage);
