@@ -72,8 +72,17 @@ namespace WebApi.Controllers
         {
             var user = _mapper.Map<User>(userDto);
             var dbUser = await _userService.CreateAsync(user, userDto.Password);
-            var link = $"{_appSettings.WebServer}/confirmation/{dbUser.Id}/{dbUser.ConfirmationGuid}";
-            await _emailService.SendEmailAsync(user.Email, "Confirm registration", $"<a href='{link}'>Click here</a>");
+
+            try
+            {
+                var link = $"{_appSettings.WebServer}/confirmation/{dbUser.Id}/{dbUser.ConfirmationGuid}";
+                await _emailService.SendEmailAsync(user.Email, "Confirm registration", $"<a href='{link}'>Click here</a>");
+            }
+            catch (Exception)
+            {
+                await _userService.DeleteAsync(dbUser.Id);
+            }
+            
             return Ok(_appSettings.ConfirmationEmailSent);
         }
         
