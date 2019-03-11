@@ -14,11 +14,6 @@ class Signup extends Component {
   }
 
   onSubmit = (event) => {
-    if (!this.props.email || !this.state.password) {
-      event.preventDefault();
-      return;
-    }
-
     if (this.state.password !== this.state.confirmPassword) {
       this.setState({ error: 'Passwords don`t match' });
       event.preventDefault();

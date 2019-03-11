@@ -10,7 +10,7 @@ class EmailInput extends Component {
   render() {
     return (
       <div>
-        <input type="text" required="required" placeholder="email" value={this.props.email} onChange={this.onEmailChange.bind(this)} />
+        <input type="email" required="required" placeholder="email" value={this.props.email} onChange={this.onEmailChange.bind(this)} />
       </div>
     );
   }
