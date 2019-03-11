@@ -81,6 +81,7 @@ namespace WebApi.Controllers
             catch (Exception)
             {
                 await _userService.DeleteAsync(dbUser.Id);
+                throw;
             }
             
             return Ok(_appSettings.ConfirmationEmailSent);
