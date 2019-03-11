@@ -24,7 +24,7 @@ class Signin extends Component {
         this.setState({ error: err.response.data, info: '' });
       });
 
-    this.setState({ password: '', info: 'Wait...', error: ''});
+    this.setState({ password: '', error: '', info: 'Wait...'});
     event.preventDefault();
   }
 

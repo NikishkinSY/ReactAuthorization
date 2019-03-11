@@ -14,10 +14,10 @@ class Confirmation extends Component {
       .then(res => {
         this.setState({ info: res.data });
       }, err => {
-        this.setState({ error: err.response.data });
+        this.setState({ error: err.response.data, info: '' });
       });
 
-      this.setState({ info: "Wait..." });
+      this.setState({ error: '', info: "Wait..." });
   }
 
   render() {
