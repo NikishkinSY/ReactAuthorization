@@ -17,11 +17,20 @@ namespace WebApi.Tests
             var provider = ConfigurateDependencyInjection.Configurate();
             _userService = (IUserService)provider.GetService(typeof(IUserService));
         }
-        
+
+        [Test]
+        public void GenerateGuid()
+        {
+            var guid = _userService.GenerateConfirmationGuid();
+
+            Assert.IsTrue(guid != Guid.Empty);
+        }
+
         [TestCase("testmailforapp2@gmail.com", "Qwerty123!")]
         public void CreateDeleteUser(string email, string password)
         {
-            var user = _userService.CreateAsync(new User { Email = email }, password).Result;
+            var guid = _userService.GenerateConfirmationGuid();
+            var user = _userService.CreateAsync(new User { Email = email }, password, guid);
             _userService.DeleteAsync(user.Id);
 
             Assert.NotNull(user);
@@ -30,8 +39,9 @@ namespace WebApi.Tests
         [TestCase("testmailforapp2@gmail.com", "Qwerty123!")]
         public void CreateDeleteUserTwice(string email, string password)
         {
-            var user = _userService.CreateAsync(new User { Email = email }, password).Result;
-            Assert.ThrowsAsync<AppException>(async () => await _userService.CreateAsync(new User { Email = email }, password));
+            var guid = _userService.GenerateConfirmationGuid();
+            var user = _userService.CreateAsync(new User { Email = email }, password, guid).Result;
+            Assert.ThrowsAsync<AppException>(async () => await _userService.CreateAsync(new User { Email = email }, password, guid));
             
             _userService.DeleteAsync(user.Id);
             Assert.NotNull(user);
@@ -42,24 +52,27 @@ namespace WebApi.Tests
         [TestCase("", "")]
         public void CreateDeleteUserWithEmptyArgs(string email, string password)
         {
-            Assert.ThrowsAsync<AppException>(async () => await _userService.CreateAsync(new User { Email = email }, password));
+            var guid = _userService.GenerateConfirmationGuid();
+            Assert.ThrowsAsync<AppException>(async () => await _userService.CreateAsync(new User { Email = email }, password, guid));
         }
         
         [TestCase("testmailforapp2@gmail.com", "Qwerty123!")]
         public void ConfirmRegistrationUser(string email, string password)
         {
-            var user = _userService.CreateAsync(new User { Email = email }, password).Result;
-            _userService.ConfirmRegistrationAsync(user.Id, user.ConfirmationGuid);
+            var guid = _userService.GenerateConfirmationGuid();
+            var user = _userService.CreateAsync(new User { Email = email }, password, guid).Result;
+            _userService.ConfirmRegistrationAsync(user.Email, user.ConfirmationGuid);
             _userService.DeleteAsync(user.Id);
         }
 
         [TestCase("testmailforapp2@gmail.com", "Qwerty123!", null)]
-        [TestCase("testmailforapp2@gmail.com", "Qwerty123!", 0)]
-        public void ConfirmRegistrationEmptyUser(string email, string password, int? id)
+        [TestCase("testmailforapp2@gmail.com", "Qwerty123!", "wrongEmail@gmail.com")]
+        public void ConfirmRegistrationEmptyUser(string email, string password, string confirmationEmail)
         {
-            var user = _userService.CreateAsync(new User { Email = email }, password).Result;
+            var guid = _userService.GenerateConfirmationGuid();
+            var user = _userService.CreateAsync(new User { Email = email }, password, guid).Result;
 
-            Assert.ThrowsAsync<AppException>(async () => await _userService.ConfirmRegistrationAsync(id ?? user.Id, Guid.NewGuid()));
+            Assert.ThrowsAsync<AppException>(async () => await _userService.ConfirmRegistrationAsync(confirmationEmail ?? email, Guid.NewGuid()));
 
             _userService.DeleteAsync(user.Id);
         }
@@ -77,7 +90,8 @@ namespace WebApi.Tests
         [TestCase("testmailforapp2@gmail.com", "Qwerty123!")]
         public void AuthenticateWithCreating(string email, string password)
         {
-            var user = _userService.CreateAsync(new User { Email = email }, password).Result;
+            var guid = _userService.GenerateConfirmationGuid();
+            var user = _userService.CreateAsync(new User { Email = email }, password, guid).Result;
             var authUser = _userService.AuthenticateAsync(email, password).Result;
             _userService.DeleteAsync(user.Id);
 
@@ -87,8 +101,9 @@ namespace WebApi.Tests
         [TestCase("testmailforapp2@gmail.com", "Qwerty123!")]
         public void AuthenticateWithCreatingAndConfirmation(string email, string password)
         {
-            var user = _userService.CreateAsync(new User { Email = email }, password).Result;
-            _userService.ConfirmRegistrationAsync(user.Id, user.ConfirmationGuid);
+            var guid = _userService.GenerateConfirmationGuid();
+            var user = _userService.CreateAsync(new User { Email = email }, password, guid).Result;
+            _userService.ConfirmRegistrationAsync(user.Email, user.ConfirmationGuid);
             var authUser = _userService.AuthenticateAsync(email, password).Result;
             _userService.DeleteAsync(user.Id);
 
@@ -106,7 +121,8 @@ namespace WebApi.Tests
         [TestCase("testmailforapp2@gmail.com", "Qwerty123!")]
         public void GetByIdWithCreating(string email, string password)
         {
-            var user = _userService.CreateAsync(new User { Email = email }, password).Result;
+            var guid = _userService.GenerateConfirmationGuid();
+            var user = _userService.CreateAsync(new User { Email = email }, password, guid).Result;
             var byIdUser = _userService.GetByIdAsync(user.Id).Result;
             _userService.DeleteAsync(user.Id);
 

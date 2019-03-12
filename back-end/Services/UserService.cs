@@ -51,7 +51,7 @@ namespace WebApi.Services
             return await _context.Users.FindAsync(id);
         }
 
-        public async Task<User> CreateAsync(User user, string password)
+        public async Task<User> CreateAsync(User user, string password, Guid confirmationGuid)
         {
             // validation
             if (string.IsNullOrWhiteSpace(user.Email) || string.IsNullOrWhiteSpace(password))
@@ -69,31 +69,32 @@ namespace WebApi.Services
 
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
-            user.ConfirmationGuid = GenerateConfirmationGuid();
+            user.ConfirmationGuid = confirmationGuid;
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
             return user;
         }
-
+        
         public Guid GenerateConfirmationGuid()
         {
             return Guid.NewGuid();
         }
 
-        public async Task ConfirmRegistrationAsync(int id, Guid guid)
+        public async Task ConfirmRegistrationAsync(string email, Guid guid)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users.FirstOrDefaultAsync(
+                x => x.Email.Equals(email, StringComparison.InvariantCultureIgnoreCase)
+                && x.ConfirmationGuid.Equals(guid));
 
-            if (user == null || !user.ConfirmationGuid.Equals(guid))
+            if (user == null)
             {
                 throw new AppException(_appSettings.UserNotFound);
             }
 
             user.IsRegistered = true;
-
-            _context.Users.Update(user);
+            
             await _context.SaveChangesAsync();
         }
 

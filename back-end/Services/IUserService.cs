@@ -8,8 +8,8 @@ namespace WebApi.Services
     {
         Task<User> AuthenticateAsync(string username, string password);
         Task<User> GetByIdAsync(int id);
-        Task<User> CreateAsync(User user, string password);
-        Task ConfirmRegistrationAsync(int id, Guid guid);
+        Task<User> CreateAsync(User user, string password, Guid confirmationGuid);
+        Task ConfirmRegistrationAsync(string email, Guid guid);
         Task DeleteAsync(int id);
 
         Guid GenerateConfirmationGuid();

@@ -71,26 +71,18 @@ namespace WebApi.Controllers
         public async Task<IActionResult> Signup([FromBody]UserDto userDto)
         {
             var user = _mapper.Map<User>(userDto);
-            var dbUser = await _userService.CreateAsync(user, userDto.Password);
-
-            try
-            {
-                var link = $"{_appSettings.WebServer}/confirmation/{dbUser.Id}/{dbUser.ConfirmationGuid}";
-                await _emailService.SendEmailAsync(user.Email, "Confirm registration", $"<a href='{link}'>Click here</a>");
-            }
-            catch (Exception)
-            {
-                await _userService.DeleteAsync(dbUser.Id);
-                throw;
-            }
+            var guid = _userService.GenerateConfirmationGuid();
+            var link = $"{_appSettings.WebServer}/confirmation/{user.Email}/{guid}";
+            await _emailService.SendEmailAsync(user.Email, "Confirm registration", $"<a href='{link}'>Click here</a>");
+            await _userService.CreateAsync(user, userDto.Password, guid);
             
             return Ok(_appSettings.ConfirmationEmailSent);
         }
         
         [HttpGet("confirm")]
-        public async Task<IActionResult> ConfirmRegistration(int id, Guid guid)
+        public async Task<IActionResult> ConfirmRegistration(string email, Guid guid)
         {
-            await _userService.ConfirmRegistrationAsync(id, guid);
+            await _userService.ConfirmRegistrationAsync(email, guid);
             return Ok(_appSettings.EmailIsConfirmed);
         }
     }
