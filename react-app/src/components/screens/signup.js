@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { withCookies } from 'react-cookie';
 import EmailInput from '../common/email';
 import api from '../common/api';
-import config from 'react-global-configuration';
 
 class Signup extends Component {
   state = {
@@ -20,7 +19,7 @@ class Signup extends Component {
       return;
     }
 
-    api.Api(config.get('server')).signup(this.props.email, this.state.password)
+    api.Api().signup(this.props.email, this.state.password)
       .then(res => {
         this.setState({ info: res.data });
       }, err => {

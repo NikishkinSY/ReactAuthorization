@@ -1,7 +1,8 @@
 import axios from 'axios';
+const server = 'http://localhost:63433/';
 
 export default {
-  Api(server) {
+  Api() {
     return {
       private: (token) => {
         const url = server + 'home/private';

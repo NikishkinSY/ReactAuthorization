@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import api from '../common/api';
-import config from 'react-global-configuration';
 
 class Public extends Component {
   state ={
@@ -8,7 +7,7 @@ class Public extends Component {
   }
 
   componentDidMount() {
-    api.Api(config.get('server')).public()
+    api.Api().public()
       .then(res => {
         this.setState({ data: res.data });
       }, err => {

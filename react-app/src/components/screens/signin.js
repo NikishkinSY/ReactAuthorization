@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { withCookies } from 'react-cookie';
 import EmailInput from '../common/email';
 import { Redirect } from 'react-router-dom';
-import api from '../common/api'; 
-import config from 'react-global-configuration';
+import api from '../common/api';
 
 class Signin extends Component {
   state = {
@@ -15,7 +14,7 @@ class Signin extends Component {
   }
 
   onSubmit = (event) => {
-    api.Api(config.get('server')).signin(this.props.email, this.state.password)
+    api.Api().signin(this.props.email, this.state.password)
       .then(res => {
         this.props.cookies.set('login', this.props.email);
         this.props.cookies.set('token', res.data.token);

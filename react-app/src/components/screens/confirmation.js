@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import api from '../common/api';
-import config from 'react-global-configuration';
 
 class Confirmation extends Component {
   state = {
@@ -10,7 +9,7 @@ class Confirmation extends Component {
 
   componentDidMount() {
     const params = this.props.match && this.props.match.params || {};
-    api.Api(config.get('server')).confirmation(params.email, params.guid)
+    api.Api().confirmation(params.email, params.guid)
       .then(res => {
         this.setState({ info: res.data });
       }, err => {

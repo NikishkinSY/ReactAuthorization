@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import api from '../common/api';
 import { withCookies } from 'react-cookie';
-import config from 'react-global-configuration';
 
 class Private extends Component {
   state ={
@@ -11,7 +10,7 @@ class Private extends Component {
   }
 
   componentDidMount() {
-    api.Api(config.get('server')).private(this.props.cookies.get('token'))
+    api.Api().private(this.props.cookies.get('token'))
       .then(res => {
         this.setState({ data: res.data });
       }, err => {
