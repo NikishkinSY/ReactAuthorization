@@ -69,12 +69,17 @@ namespace WebApi.Services
 
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
-            user.ConfirmationGuid = Guid.NewGuid();
+            user.ConfirmationGuid = GenerateConfirmationGuid();
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
             return user;
+        }
+
+        public Guid GenerateConfirmationGuid()
+        {
+            return Guid.NewGuid();
         }
 
         public async Task ConfirmRegistrationAsync(int id, Guid guid)
