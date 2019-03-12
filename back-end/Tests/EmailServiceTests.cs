@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using WebApi.Services;
 
@@ -20,7 +19,7 @@ namespace WebApi.Tests
         [TestCase("testmailforapp2@gmail.com")]
         public void EmailSend(string email)
         {
-            _emailService.SendEmailAsync(email, "test", "test");
+            Assert.DoesNotThrowAsync(async () => await _emailService.SendEmailAsync(email, "test", "test"));
         }
     }
 }
