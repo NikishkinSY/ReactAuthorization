@@ -1,6 +1,5 @@
-﻿using System;
-using NUnit.Framework;
-using NUnit.Framework.Constraints;
+﻿using NUnit.Framework;
+using System;
 using WebApi.Entities;
 using WebApi.Helpers;
 using WebApi.Services;
@@ -37,7 +36,7 @@ namespace WebApi.Tests
         }
 
         [TestCase("testmailforapp2@gmail.com", "Qwerty123!")]
-        public void CreateDeleteUserTwice(string email, string password)
+        public void CreateUserTwice(string email, string password)
         {
             var guid = _userService.GenerateConfirmationGuid();
             var user = _userService.CreateAsync(new User { Email = email }, password, guid).Result;
@@ -50,7 +49,7 @@ namespace WebApi.Tests
         [TestCase("", "Qwerty123!")]
         [TestCase("testmailforapp2@gmail.com", "")]
         [TestCase("", "")]
-        public void CreateDeleteUserWithEmptyArgs(string email, string password)
+        public void CreateUserWithEmptyArgs(string email, string password)
         {
             var guid = _userService.GenerateConfirmationGuid();
             Assert.ThrowsAsync<AppException>(async () => await _userService.CreateAsync(new User { Email = email }, password, guid));
