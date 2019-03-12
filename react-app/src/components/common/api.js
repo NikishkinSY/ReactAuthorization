@@ -23,8 +23,8 @@ export default {
         const url = server + 'users/signup';
         return axios.post(url, { Email: email, Password: password })
       },
-      confirmation: (id, guid) => {
-        const url = server + 'users/confirm?id=' + id + '&guid=' + guid
+      confirmation: (email, guid) => {
+        const url = server + 'users/confirm?email=' + email + '&guid=' + guid
         return axios.get(url)
       }
     }

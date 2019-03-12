@@ -10,7 +10,7 @@ class Confirmation extends Component {
 
   componentDidMount() {
     const params = this.props.match && this.props.match.params || {};
-    api.Api(config.get('server')).confirmation(params.id, params.guid)
+    api.Api(config.get('server')).confirmation(params.email, params.guid)
       .then(res => {
         this.setState({ info: res.data });
       }, err => {
