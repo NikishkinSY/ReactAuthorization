@@ -27,7 +27,7 @@ class Signin extends Component {
     event.preventDefault();
   }
 
-  onPasswordChange(event) {
+  onPasswordChange = (event) => {
     this.setState({ password: event.target.value });
   }
 
@@ -40,7 +40,7 @@ class Signin extends Component {
       <form className="sign-form" onSubmit={this.onSubmit}>
         <EmailInput />
         <div>
-          <input type="text" required="required" placeholder="password" value={this.state.password} onChange={this.onPasswordChange.bind(this)} />
+          <input type="text" required="required" placeholder="password" value={this.state.password} onChange={this.onPasswordChange} />
         </div>
         <div>
           <button type="submit" className="btn">Sign in</button>

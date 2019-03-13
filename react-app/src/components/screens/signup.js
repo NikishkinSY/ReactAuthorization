@@ -30,11 +30,11 @@ class Signup extends Component {
     event.preventDefault();
   }
 
-  onPasswordChange(event) {
+  onPasswordChange = (event) => {
     this.setState({ password: event.target.value });
   }
 
-  onConfirmPasswordChange(event) {
+  onConfirmPasswordChange = (event) => {
     this.setState({ confirmPassword: event.target.value });
   }
 
@@ -43,10 +43,10 @@ class Signup extends Component {
       <form className="sign-form" onSubmit={this.onSubmit}>
         <EmailInput />
         <div>
-          <input type="text" required="required" placeholder="password" value={this.state.password} onChange={this.onPasswordChange.bind(this)} />
+          <input type="text" required="required" placeholder="password" value={this.state.password} onChange={this.onPasswordChange} />
         </div>
         <div>
-          <input type="text" required="required" placeholder="confirm password" value={this.state.confirmPassword} onChange={this.onConfirmPasswordChange.bind(this)} />
+          <input type="text" required="required" placeholder="confirm password" value={this.state.confirmPassword} onChange={this.onConfirmPasswordChange} />
         </div>
         <div>
           <button type="submit" className="btn">Sign up</button>
