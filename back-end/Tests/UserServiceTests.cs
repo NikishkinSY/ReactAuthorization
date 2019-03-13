@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Threading.Tasks;
 using WebApi.Entities;
 using WebApi.Helpers;
 using WebApi.Services;
@@ -29,8 +30,8 @@ namespace WebApi.Tests
         public void CreateDeleteUser(string email, string password)
         {
             var guid = _userService.GenerateConfirmationGuid();
-            var user = _userService.CreateAsync(new User { Email = email }, password, guid);
-            _userService.DeleteAsync(user.Id);
+            var user = _userService.CreateAsync(new User { Email = email }, password, guid).Result;
+            _userService.DeleteAsync(user.Id).Wait();
 
             Assert.NotNull(user);
         }
